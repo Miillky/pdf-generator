@@ -1,14 +1,11 @@
 package excel;
 
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.*;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 public class Excel {
@@ -39,7 +36,7 @@ public class Excel {
 
         for (int rowNum = rowStart; rowNum <= rowEnd; rowNum++) {
 
-            List employeData =  new ArrayList();
+            List<String> employeData =  new ArrayList<>();
             Row row = sheet.getRow(rowNum);
 
             if (row == null) {
@@ -75,13 +72,11 @@ public class Excel {
                 }
             }
 
-            System.out.println(employeData);
-
-            Employee employee = new Employee(Integer.parseInt((String) employeData.get(0)),
-                    employeData.get(1).toString(),
-                    employeData.get(2).toString(),
-                    Integer.parseInt((String) employeData.get(3)),
-                    Double.parseDouble((String)employeData.get(4)));
+            Employee employee = new Employee(Integer.parseInt(employeData.get(0)),
+                    employeData.get(1),
+                    employeData.get(2),
+                    Integer.parseInt(employeData.get(3)),
+                    Double.parseDouble(employeData.get(4)));
 
             employees.add(employee);
 

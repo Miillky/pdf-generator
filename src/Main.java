@@ -1,11 +1,21 @@
-import java.io.IOException;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
-public class Main {
+public class Main extends Application {
 
-    public static void main(String[] args) throws IOException {
+    @Override
+    public void start(Stage primaryStage) throws Exception{
+        Parent root = FXMLLoader.load(getClass().getResource("src/JFX/layout.fxml"));
+        primaryStage.setTitle("PDF Generator");
+        primaryStage.setScene(new Scene(root, 500, 300));
+        primaryStage.show();
+    }
 
-        Generator generator = new Generator();
-        generator.run();
 
+    public static void main(String[] args) {
+        launch(args);
     }
 }
