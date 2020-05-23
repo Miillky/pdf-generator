@@ -1,11 +1,13 @@
 package excel;
 
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.*;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -13,17 +15,11 @@ public class Excel {
 
     private final String fileName;
     private final String sheetName;
-    private static final String[] columns = { "Id", "Name", "Designation" };
     private static final List<Employee> employees =  new ArrayList<>();
-
-    static {
-        employees.add(new Employee(1, "Vedran Milković", "Executive" ));
-        employees.add(new Employee(2,"Milković Vedran", "Manager"));
-    }
 
     public Excel(String fileName){
         this.fileName = fileName;
-        this.sheetName = "Employees";
+        this.sheetName = "Radnici";
     }
 
     public Excel(String fileName, String sheetName){
@@ -31,84 +27,63 @@ public class Excel {
         this.sheetName = sheetName;
     }
 
-    public void create() throws IOException {
-
-        Workbook workbook = new XSSFWorkbook();
-        CreationHelper creationHelper = workbook.getCreationHelper();
-        Sheet sheet = workbook.createSheet(sheetName);
-
-        Font headerFont = workbook.createFont();
-        headerFont.setBold(true);
-        headerFont.setFontHeightInPoints((short) 10);
-        headerFont.setColor(IndexedColors.RED.getIndex());
-
-        CellStyle headerCellStyle = workbook.createCellStyle();
-        headerCellStyle.setFont(headerFont);
-
-        Row headerRow = sheet.createRow(0);
-
-        for(int i = 0; i < columns.length; i++){
-            Cell cell = headerRow.createCell(i);
-            cell.setCellValue(columns[i]);
-            cell.setCellStyle(headerCellStyle);
-        }
-
-        CellStyle dateCellStyle = workbook.createCellStyle();
-        dateCellStyle.setDataFormat(creationHelper.createDataFormat().getFormat("d.m.Y"));
-
-        int rowNum = 1;
-        for(Employee employee: employees){
-
-            Row row = sheet.createRow(rowNum++);
-            row.createCell(0).setCellValue(employee.getId());
-            row.createCell(1).setCellValue(employee.getName());
-            row.createCell(2).setCellValue(employee.getDesignation());
-
-        }
-
-        for(int i = 0; i < columns.length; i++){
-            sheet.autoSizeColumn(i);
-        }
-
-        FileOutputStream fileOut = new FileOutputStream("files/" + fileName + ".xlsx");
-        workbook.write(fileOut);
-        fileOut.close();
-        workbook.close();
-
-    }
-
     public void load() throws IOException {
 
-        File myFile = new File("files/" + fileName + ".xlsx");
+        File myFile = new File("src/resources/" + fileName + ".xlsx");
         FileInputStream fis = new FileInputStream(myFile);
         Workbook workbook = new XSSFWorkbook(fis);
         Sheet sheet = workbook.getSheet(sheetName);
 
-        for(Row row: sheet){
+        int rowStart = 1;
+        int rowEnd = sheet.getLastRowNum();
 
-            Iterator<Cell> cellIterator = row.cellIterator();
+        for (int rowNum = rowStart; rowNum <= rowEnd; rowNum++) {
 
-            while (cellIterator.hasNext()){
+            List employeData =  new ArrayList();
+            Row row = sheet.getRow(rowNum);
 
-                Cell cell = cellIterator.next();
-
-                switch (cell.getCellType()) {
-
-                    case STRING:
-                        System.out.print(cell.getStringCellValue() + "\t");
-                        break;
-                    case NUMERIC:
-                        System.out.print(cell.getNumericCellValue() + "\t");
-                        break;
-                    case BOOLEAN:
-                        System.out.print(cell.getBooleanCellValue() + "\t");
-                        break;
-
-                }
-
+            if (row == null) {
+                // TODO - Row empty error
+                continue;
             }
 
-            System.out.println();
+            Sheet sheetCoef = workbook.getSheet("Koeficijenti");
+
+            int cellEnd = row.getLastCellNum() - 1;
+            for (int cellNum = 0; cellNum <= cellEnd; cellNum++) {
+                Cell cell = row.getCell(cellNum);
+
+                if (cell == null) {
+
+                    // TODO - Cell empty error
+                    continue;
+
+                } else {
+
+                    if( cellNum == cellEnd ){
+
+                        Row rowCoef = sheetCoef.getRow(rowNum);
+                        Cell cellCoef = rowCoef.getCell(0);
+                        employeData.add(formatCell(cell));
+                        employeData.add(cellCoef.toString());
+
+                    } else {
+
+                        employeData.add(formatCell(cell));
+
+                    }
+                }
+            }
+
+            System.out.println(employeData);
+
+            Employee employee = new Employee(Integer.parseInt((String) employeData.get(0)),
+                    employeData.get(1).toString(),
+                    employeData.get(2).toString(),
+                    Integer.parseInt((String) employeData.get(3)),
+                    Double.parseDouble((String)employeData.get(4)));
+
+            employees.add(employee);
 
         }
 
