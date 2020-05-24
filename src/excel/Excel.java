@@ -10,26 +10,14 @@ import java.util.List;
 
 public class Excel {
 
-    private final String fileName;
-    private final String sheetName;
-    private static final List<Employee> employees =  new ArrayList<>();
+    protected static final List<Employee> employees =  new ArrayList<>();
 
-    public Excel(String fileName){
-        this.fileName = fileName;
-        this.sheetName = "Radnici";
-    }
+    public void load(String filePath) throws IOException {
 
-    public Excel(String fileName, String sheetName){
-        this.fileName = fileName;
-        this.sheetName = sheetName;
-    }
-
-    public void load() throws IOException {
-
-        File myFile = new File("src/resources/" + fileName + ".xlsx");
+        File myFile = new File(filePath);
         FileInputStream fis = new FileInputStream(myFile);
         Workbook workbook = new XSSFWorkbook(fis);
-        Sheet sheet = workbook.getSheet(sheetName);
+        Sheet sheet = workbook.getSheet("Radnici");
 
         int rowStart = 1;
         int rowEnd = sheet.getLastRowNum();
@@ -84,19 +72,19 @@ public class Excel {
 
     }
 
-    public void toXML(){
+    public void toXML(String filePath){
 
         try {
 
-            InputStream inputStream = new FileInputStream(new File("files/" + fileName + ".xlsx"));
+            InputStream inputStream = new FileInputStream(new File(filePath));
             Workbook workbook = WorkbookFactory.create(inputStream);
-            Sheet sheet = workbook.getSheet(sheetName);
+            Sheet sheet = workbook.getSheet("Radnici");
 
-            FileWriter fostream = new FileWriter("files/" + fileName + ".xml");
+            FileWriter fostream = new FileWriter(filePath);
             PrintWriter out = new PrintWriter(new BufferedWriter(fostream));
 
             out.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-            out.println("<" + sheetName + ">");
+            out.println("<Radnici>");
 
             boolean firstRow = true;
             for(Row row: sheet){
@@ -110,7 +98,7 @@ public class Excel {
 
             }
 
-            out.println("</" + sheetName + ">");
+            out.println("</Radnici>");
             out.flush();
             out.close();
 
