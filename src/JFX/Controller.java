@@ -7,9 +7,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -29,6 +27,12 @@ public class Controller extends Excel implements Initializable {
 
     private String filePath;
 
+    @FXML
+    private Button generatePDFBtn;
+    @FXML
+    private Button generateEmployeesBtn;
+    @FXML
+    private CheckBox selectAllEmployess;
     @FXML
     private BorderPane BorderPane;
     @FXML
@@ -50,18 +54,30 @@ public class Controller extends Excel implements Initializable {
 
     @FXML
     public void choseFile(MouseEvent mouseEvent) throws IOException {
+
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Odaberite datoteku");
+        fileChooser.setTitle(Constants.CHOSE_FILE_WINDOW_TITLE);
         Stage stage = (Stage)BorderPane.getScene().getWindow();
 
         File file = fileChooser.showOpenDialog(stage);
 
         if( FileMagic.valueOf(file).equals(FileMagic.OOXML) ){
             filePath = file.getPath();
+            generateEmployeesBtn.setDisable(false);
+            selectAllEmployess.setDisable(true);
+            generatePDFBtn.setDisable(true);
         } else {
-            // TODO - popup not excel file error
-        }
 
+            if( employeesList.getItems().size() > 0 ){
+                employeesList.getItems().clear();
+            }
+
+            AlertBox alertBox = new AlertBox();
+            alertBox.display(Constants.EXCEL_FILE_ERROR_TITLE, Constants.EXCEL_FILE_ERROR_MESSAGE);
+            generateEmployeesBtn.setDisable(true);
+            selectAllEmployess.setDisable(true);
+            generatePDFBtn.setDisable(true);
+        }
 
     }
 
@@ -72,6 +88,15 @@ public class Controller extends Excel implements Initializable {
             ObservableList<Employee> employeesListCollection = FXCollections.observableArrayList();
             employeesListCollection.addAll(employees);
             employeesList.setItems(employeesListCollection);
+            generateEmployeesBtn.setDisable(true);
+            selectAllEmployess.setDisable(false);
+            generatePDFBtn.setDisable(false);
+        }
+    }
+
+    public void selectAllEmployees(MouseEvent mouseEvent) {
+        for(Employee employee : employeesList.getItems() ){
+            employee.getSelected().setSelected(selectAllEmployess.isSelected());
         }
     }
 
@@ -85,18 +110,34 @@ public class Controller extends Excel implements Initializable {
             }
         }
         if( employeesSelectedCollection.isEmpty() ){
-            // TODO - error to select employee
+            AlertBox alertBox = new AlertBox();
+            alertBox.display(Constants.EMPLOYEE_ERROR_TITLE, Constants.EMPLOYEE_ERROR_MESSAGE);
         } else {
 
             for(Employee employee : employeesSelectedCollection) {
                 PDF employeePDF = new PDF(employee);
                 employeePDF.convertToPDF();
             }
+
+            AlertBox alertBox = new AlertBox();
+            if( employeesSelectedCollection.size() == 1 ) {
+                alertBox.display(Constants.EMPLOYEE_SUCCESS_TITLE, Constants.EMPLOYEE_SUCCESS_MESSAGE);
+            } else {
+                alertBox.display(Constants.EMPLOYEES_SUCCESS_TITLE, Constants.EMPLOYEES_SUCCESS_MESSAGE);
+            }
+
         }
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        generateEmployeesBtn.setDisable(true);
+        generatePDFBtn.setDisable(true);
+        selectAllEmployess.setDisable(true);
+
+        employeesList.setPlaceholder(new Label(Constants.TABLE_CONTENT_TEXT));
+
         employeeId.setCellValueFactory(new PropertyValueFactory<Employee, Integer>("id"));
         employeeFirstName.setCellValueFactory(new PropertyValueFactory<Employee, SimpleStringProperty>("name"));
         employeeLastName.setCellValueFactory(new PropertyValueFactory<Employee, SimpleStringProperty>("surname"));

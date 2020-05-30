@@ -1,5 +1,7 @@
 package excel;
 
+import JFX.AlertBox;
+import JFX.Constants;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -17,10 +19,12 @@ public class Excel {
         File myFile = new File(filePath);
         FileInputStream fis = new FileInputStream(myFile);
         Workbook workbook = new XSSFWorkbook(fis);
-        Sheet sheet = workbook.getSheet("Radnici");
+        Sheet sheet = workbook.getSheet(Constants.MAIN_EXCEL_SHEET_NAME);
 
         int rowStart = 1;
         int rowEnd = sheet.getLastRowNum();
+        boolean emptyRow = false;
+        boolean emptyCell = false;
 
         for (int rowNum = rowStart; rowNum <= rowEnd; rowNum++) {
 
@@ -28,11 +32,15 @@ public class Excel {
             Row row = sheet.getRow(rowNum);
 
             if (row == null) {
-                // TODO - Row empty error
+
+                if(!emptyRow){
+                    emptyRow = true;
+                }
+
                 continue;
             }
 
-            Sheet sheetCoef = workbook.getSheet("Koeficijenti");
+            Sheet sheetCoef = workbook.getSheet(Constants.SECONDARY_EXCEL_SHEET_NAME);
 
             int cellEnd = row.getLastCellNum() - 1;
             for (int cellNum = 0; cellNum <= cellEnd; cellNum++) {
@@ -40,8 +48,9 @@ public class Excel {
 
                 if (cell == null) {
 
-                    // TODO - Cell empty error
-                    continue;
+                    if(!emptyCell) {
+                        emptyCell = true;
+                    }
 
                 } else {
 
@@ -58,6 +67,16 @@ public class Excel {
 
                     }
                 }
+            }
+
+            if( emptyRow ){
+                AlertBox alertBox = new AlertBox();
+                alertBox.display(Constants.EXCEL_ROW_ERROR_TITLE, Constants.EXCEL_ROW_ERROR_MESSAGE);
+            }
+
+            if( emptyCell ){
+                AlertBox alertBox = new AlertBox();
+                alertBox.display(Constants.EXCEL_COLUMN_ERROR_TITLE, Constants.EXCEL_COLUMN_ERROR_MESSAGE);
             }
 
             Employee employee = new Employee(Integer.parseInt(employeData.get(0)),
