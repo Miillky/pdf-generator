@@ -8,14 +8,12 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("src/JFX/PDFGeneratorLayout.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("./src/JFX/PDFGeneratorLayout.fxml"));
         primaryStage.setTitle("PDF Generator");
         primaryStage.setScene(new Scene(root, 600, 400));
         primaryStage.setResizable(false);
         primaryStage.show();
     }
-
-
 
     public static void main(String[] args) {
         launch(args);

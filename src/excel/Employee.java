@@ -6,7 +6,6 @@ import lombok.Getter;
 @Getter
 public class Employee {
 
-
     private final Integer id;
     private final String name;
     private final String surname;

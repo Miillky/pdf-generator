@@ -1,15 +1,16 @@
 package pdf;
 
+import excel.Employee;
+
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.element.Paragraph;
-import excel.Employee;
+
 import org.apache.fop.apps.*;
 import javax.xml.transform.TransformerException;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
 
 import com.itextpdf.layout.Document;
 
@@ -20,8 +21,6 @@ public class PDF {
     public PDF(Employee employee){
         this.employee = employee;
     }
-
-    public static final String DEST = "./src/resources/hello.pdf";
 
     private String createFileName(){
 

@@ -72,42 +72,6 @@ public class Excel {
 
     }
 
-    public void toXML(String filePath){
-
-        try {
-
-            InputStream inputStream = new FileInputStream(new File(filePath));
-            Workbook workbook = WorkbookFactory.create(inputStream);
-            Sheet sheet = workbook.getSheet("Radnici");
-
-            FileWriter fostream = new FileWriter(filePath);
-            PrintWriter out = new PrintWriter(new BufferedWriter(fostream));
-
-            out.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-            out.println("<Radnici>");
-
-            boolean firstRow = true;
-            for(Row row: sheet){
-                if(firstRow){
-                    firstRow = false;
-                }
-
-                out.println(formatElement("\t\t", "ID", formatCell(row.getCell(0))));
-                out.println(formatElement("\t\t", "Name", formatCell(row.getCell(1))));
-                out.println(formatElement("\t\t", "Designation", formatCell(row.getCell(2))));
-
-            }
-
-            out.println("</Radnici>");
-            out.flush();
-            out.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
     private String formatCell(Cell cell){
 
         if(cell == null){
@@ -130,26 +94,6 @@ public class Excel {
 
         }
 
-    }
-
-    private String formatElement(String prefix, String tag, String value){
-
-        StringBuilder sb = new StringBuilder(prefix);
-
-        sb.append("<");
-        sb.append(tag);
-
-        if(value != null && value.length() > 0){
-            sb.append(">");
-            sb.append(value);
-            sb.append("</");
-            sb.append(tag);
-            sb.append(">");
-        } else {
-            sb.append("/>");
-        }
-
-        return sb.toString();
     }
 
 }

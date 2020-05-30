@@ -2,7 +2,6 @@ package JFX;
 
 import excel.Employee;
 import excel.Excel;
-import javafx.beans.Observable;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,7 +16,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.apache.fop.apps.FOPException;
-import org.apache.poi.hsmf.datatypes.PropertyValue;
 import org.apache.poi.poifs.filesystem.FileMagic;
 import pdf.PDF;
 
@@ -25,7 +23,6 @@ import javax.xml.transform.TransformerException;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Iterator;
 import java.util.ResourceBundle;
 
 public class Controller extends Excel implements Initializable {
