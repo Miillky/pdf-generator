@@ -28,7 +28,7 @@ public class Excel {
 
         for (int rowNum = rowStart; rowNum <= rowEnd; rowNum++) {
 
-            List<String> employeData =  new ArrayList<>();
+            List<String> employeeData =  new ArrayList<>();
             Row row = sheet.getRow(rowNum);
 
             if (row == null) {
@@ -40,7 +40,7 @@ public class Excel {
                 continue;
             }
 
-            Sheet sheetCoef = workbook.getSheet(Constants.SECONDARY_EXCEL_SHEET_NAME);
+            Sheet sheetCoefficient = workbook.getSheet(Constants.SECONDARY_EXCEL_SHEET_NAME);
 
             int cellEnd = row.getLastCellNum() - 1;
             for (int cellNum = 0; cellNum <= cellEnd; cellNum++) {
@@ -56,14 +56,14 @@ public class Excel {
 
                     if( cellNum == cellEnd ){
 
-                        Row rowCoef = sheetCoef.getRow(rowNum);
-                        Cell cellCoef = rowCoef.getCell(0);
-                        employeData.add(formatCell(cell));
-                        employeData.add(cellCoef.toString());
+                        Row rowCoefficient = sheetCoefficient.getRow(rowNum);
+                        Cell cellCoefficient = rowCoefficient.getCell(0);
+                        employeeData.add(formatCell(cell));
+                        employeeData.add(cellCoefficient.toString());
 
                     } else {
 
-                        employeData.add(formatCell(cell));
+                        employeeData.add(formatCell(cell));
 
                     }
                 }
@@ -79,11 +79,11 @@ public class Excel {
                 alertBox.display(Constants.EXCEL_COLUMN_ERROR_TITLE, Constants.EXCEL_COLUMN_ERROR_MESSAGE);
             }
 
-            Employee employee = new Employee(Integer.parseInt(employeData.get(0)),
-                    employeData.get(1),
-                    employeData.get(2),
-                    Integer.parseInt(employeData.get(3)),
-                    Double.parseDouble(employeData.get(4)));
+            Employee employee = new Employee(Integer.parseInt(employeeData.get(0)),
+                    employeeData.get(1),
+                    employeeData.get(2),
+                    Integer.parseInt(employeeData.get(3)),
+                    Double.parseDouble(employeeData.get(4)));
 
             employees.add(employee);
 

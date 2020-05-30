@@ -32,7 +32,7 @@ public class Controller extends Excel implements Initializable {
     @FXML
     private Button generateEmployeesBtn;
     @FXML
-    private CheckBox selectAllEmployess;
+    private CheckBox selectAllEmployees;
     @FXML
     private BorderPane BorderPane;
     @FXML
@@ -64,7 +64,7 @@ public class Controller extends Excel implements Initializable {
         if( FileMagic.valueOf(file).equals(FileMagic.OOXML) ){
             filePath = file.getPath();
             generateEmployeesBtn.setDisable(false);
-            selectAllEmployess.setDisable(true);
+            selectAllEmployees.setDisable(true);
             generatePDFBtn.setDisable(true);
         } else {
 
@@ -75,7 +75,7 @@ public class Controller extends Excel implements Initializable {
             AlertBox alertBox = new AlertBox();
             alertBox.display(Constants.EXCEL_FILE_ERROR_TITLE, Constants.EXCEL_FILE_ERROR_MESSAGE);
             generateEmployeesBtn.setDisable(true);
-            selectAllEmployess.setDisable(true);
+            selectAllEmployees.setDisable(true);
             generatePDFBtn.setDisable(true);
         }
 
@@ -89,14 +89,14 @@ public class Controller extends Excel implements Initializable {
             employeesListCollection.addAll(employees);
             employeesList.setItems(employeesListCollection);
             generateEmployeesBtn.setDisable(true);
-            selectAllEmployess.setDisable(false);
+            selectAllEmployees.setDisable(false);
             generatePDFBtn.setDisable(false);
         }
     }
 
     public void selectAllEmployees(MouseEvent mouseEvent) {
         for(Employee employee : employeesList.getItems() ){
-            employee.getSelected().setSelected(selectAllEmployess.isSelected());
+            employee.getSelected().setSelected(selectAllEmployees.isSelected());
         }
     }
 
@@ -134,7 +134,7 @@ public class Controller extends Excel implements Initializable {
 
         generateEmployeesBtn.setDisable(true);
         generatePDFBtn.setDisable(true);
-        selectAllEmployess.setDisable(true);
+        selectAllEmployees.setDisable(true);
 
         employeesList.setPlaceholder(new Label(Constants.TABLE_CONTENT_TEXT));
 

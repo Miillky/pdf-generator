@@ -24,7 +24,7 @@
             <font>
                <Font size="12.0" />
             </font></Button>
-           <Button fx:id="insertFileBtn" mnemonicParsing="false" onMouseClicked="#choseFile" prefHeight="25.0" prefWidth="150.0" text="Odaberite datoteku">
+           <Button mnemonicParsing="false" onMouseClicked="#choseFile" prefHeight="25.0" prefWidth="150.0" text="Odaberite datoteku">
             <font>
                <Font size="12.0" />
             </font></Button>
@@ -36,12 +36,12 @@
                <Font size="10.0" />
             </font>
            </Label>
-         <CheckBox fx:id="selectAllEmployess" alignment="CENTER_RIGHT" contentDisplay="CENTER" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onMouseClicked="#selectAllEmployees" text="Odaberi sve:" textAlignment="JUSTIFY" GridPane.columnIndex="2" GridPane.rowIndex="1">
+         <CheckBox fx:id="selectAllEmployees" alignment="CENTER_RIGHT" contentDisplay="CENTER" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onMouseClicked="#selectAllEmployees" text="Odaberi sve:" textAlignment="JUSTIFY" GridPane.columnIndex="2" GridPane.rowIndex="1">
             <font>
                <Font size="10.0" />
             </font>
             <GridPane.margin>
-               <Insets right="-100.0" />
+               <Insets right="-75.0" />
             </GridPane.margin>
          </CheckBox>
        </GridPane>
@@ -59,15 +59,15 @@
    <center>
       <ScrollPane BorderPane.alignment="CENTER">
          <content>
-            <TableView fx:id="employeesList" prefHeight="290.0">
+            <TableView fx:id="employeesList" prefHeight="295.0" prefWidth="580.0">
               <columns>
                 <TableColumn fx:id="employeeId" editable="false" maxWidth="1.7976931348623157E308" minWidth="40.0" prefWidth="45.0" resizable="false" text="Id" />
-                <TableColumn fx:id="employeeFirstName" editable="false" maxWidth="1.7976931348623157E308" minWidth="90.0" prefWidth="90.0" resizable="false" text="Ime" />
-                  <TableColumn fx:id="employeeLastName" editable="false" maxWidth="1.7976931348623157E308" minWidth="95.0" prefWidth="95.0" resizable="false" text="Prezime" />
-                  <TableColumn fx:id="employeeBase" editable="false" maxWidth="1.7976931348623157E308" minWidth="95.0" prefWidth="100.0" resizable="false" text="Osnovica" />
-                  <TableColumn fx:id="employeeCoefficient" editable="false" maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="110.0" resizable="false" text="Koificijent" />
-                  <TableColumn fx:id="employeeSalary" editable="false" maxWidth="1.7976931348623157E308" resizable="false" text="Plača" />
-                  <TableColumn fx:id="employeeSelected" editable="false" maxWidth="1.7976931348623157E308" minWidth="0.0" prefWidth="74.0" resizable="false" sortable="false" text="Odaberi" />
+                <TableColumn fx:id="employeeFirstName" editable="false" maxWidth="1.7976931348623157E308" minWidth="63.0" prefWidth="85.0" resizable="false" text="Ime" />
+                  <TableColumn fx:id="employeeLastName" editable="false" maxWidth="1.7976931348623157E308" minWidth="74.0" prefWidth="85.0" resizable="false" text="Prezime" />
+                  <TableColumn fx:id="employeeBase" editable="false" maxWidth="1.7976931348623157E308" minWidth="95.0" prefWidth="102.0" resizable="false" text="Osnovica" />
+                  <TableColumn fx:id="employeeCoefficient" editable="false" maxWidth="1.7976931348623157E308" minWidth="90.0" prefWidth="103.0" resizable="false" text="Koificijent" />
+                  <TableColumn fx:id="employeeSalary" editable="false" maxWidth="1.7976931348623157E308" prefWidth="88.0" resizable="false" text="Plaća" />
+                  <TableColumn fx:id="employeeSelected" editable="false" maxWidth="1.7976931348623157E308" minWidth="0.0" prefWidth="70.0" resizable="false" sortable="false" text="Odaberi" />
               </columns>
             </TableView>
          </content>
