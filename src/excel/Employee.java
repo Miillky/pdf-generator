@@ -1,5 +1,6 @@
 package excel;
 
+import javafx.scene.control.CheckBox;
 import lombok.Getter;
 
 @Getter
@@ -11,7 +12,8 @@ public class Employee {
     private final String surname;
     private final Integer base;
     private final Double coefficient;
-    private static boolean selected;
+    private final Double salary;
+    private final CheckBox selected;
 
     public Employee(Integer id, String name, String surname, Integer base, Double coefficient) {
         this.id = id;
@@ -19,6 +21,12 @@ public class Employee {
         this.surname = surname;
         this.base = base;
         this.coefficient = coefficient;
+        this.salary = calculateSalary();
+        this.selected = new CheckBox();
+    }
+
+    private double calculateSalary(){
+        return Math.round(base * coefficient);
     }
 
     @Override
