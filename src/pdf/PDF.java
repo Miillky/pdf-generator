@@ -1,41 +1,53 @@
 package pdf;
 
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.element.Paragraph;
+import excel.Employee;
 import org.apache.fop.apps.*;
-
-import javax.xml.transform.Result;
-import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.sax.SAXResult;
-import javax.xml.transform.stream.StreamSource;
-import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+
+import com.itextpdf.layout.Document;
 
 public class PDF {
 
-    private final String file;
+    private final Employee employee;
 
-    public PDF(String file){
-        this.file = file;
+    public PDF(Employee employee){
+        this.employee = employee;
+    }
+
+    public static final String DEST = "./src/resources/hello.pdf";
+
+    private String createFileName(){
+
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("d.M.y. HH:mm");
+        LocalDateTime now = LocalDateTime.now();
+
+        return employee.getName() + " " + employee.getSurname() + " - " + dtf.format(now);
+
+    }
+
+    private String getPath(){
+        return "./src/resources/" +  createFileName() + ".pdf";
     }
 
     public void convertToPDF() throws IOException, FOPException, TransformerException{
 
-        File xsltFile = new File("files/" + file + ".xsl");
-        StreamSource xmlSource = new StreamSource("files/" + file + ".xml");
-        FopFactory fopFactory = FopFactory.newInstance(new File(".").toURI());
-        FOUserAgent foUserAgent = fopFactory.newFOUserAgent();
+        PdfDocument pdf = new PdfDocument(new PdfWriter(getPath()));
+        Document document = new Document(pdf);
 
-        try( OutputStream out = new java.io.FileOutputStream("files/" + file + ".pdf") ) {
-
-            Fop fop = fopFactory.newFop(MimeConstants.MIME_PDF, foUserAgent, out);
-            TransformerFactory factory = TransformerFactory.newInstance();
-            Transformer transformer = factory.newTransformer(new StreamSource(xsltFile));
-            Result res = new SAXResult(fop.getDefaultHandler());
-            transformer.transform(xmlSource, res);
-
-        }
+        document.add(new Paragraph(employee.getId().toString()));
+        document.add(new Paragraph(employee.getName()));
+        document.add(new Paragraph(employee.getSurname()));
+        document.add(new Paragraph(employee.getBase().toString()));
+        document.add(new Paragraph(employee.getCoefficient().toString()));
+        document.add(new Paragraph(employee.getSalary().toString()));
+        document.close();
 
     }
 

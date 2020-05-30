@@ -16,9 +16,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.apache.fop.apps.FOPException;
 import org.apache.poi.hsmf.datatypes.PropertyValue;
 import org.apache.poi.poifs.filesystem.FileMagic;
+import pdf.PDF;
 
+import javax.xml.transform.TransformerException;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -76,7 +79,7 @@ public class Controller extends Excel implements Initializable {
     }
 
     @FXML
-    public void generatePDF(javafx.scene.input.MouseEvent mouseEvent) {
+    public void generatePDF(javafx.scene.input.MouseEvent mouseEvent) throws TransformerException, IOException, FOPException {
 
         ObservableList<Employee> employeesSelectedCollection = FXCollections.observableArrayList();
         for(Employee employee : employees){
@@ -88,8 +91,10 @@ public class Controller extends Excel implements Initializable {
             // TODO - error to select employee
         } else {
 
-            System.out.println(employeesSelectedCollection);
-
+            for(Employee employee : employeesSelectedCollection) {
+                PDF employeePDF = new PDF(employee);
+                employeePDF.convertToPDF();
+            }
         }
     }
 
